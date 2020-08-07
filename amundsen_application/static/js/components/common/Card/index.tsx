@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import './styles.scss';
+
 export interface CardProps {
   title: string;
   subtitle?: string;
