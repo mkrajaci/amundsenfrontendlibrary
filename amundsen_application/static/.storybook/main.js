@@ -25,24 +25,9 @@ module.exports = {
     });
     config.resolve.extensions.push('.ts', '.tsx');
 
-    // config.module.rules.push({
-    //   test: /\.(sa|sc|c)ss$/,
-    //   use: [
-    //     MiniCssExtractPlugin.loader,
-    //     'css-loader',
-    //     {
-    //       loader: 'sass-loader',
-    //       options: {
-    //         includePaths: path.join(__dirname, '/css/'),
-    //       },
-    //     },
-    //   ],
-    // });
-    // config.resolve.extensions.push('.css', '.scss');
-
-    // Make whatever fine-grained changes you need
+    // Loads Sass files for styling
     config.module.rules.push({
-      test: /\.(sa|sc|c)ss$/,
+      test: /\.s[ac]ss$/i,
       use: [
         {
           loader: require.resolve('style-loader'),
@@ -53,23 +38,21 @@ module.exports = {
         {
           loader: require.resolve('sass-loader'),
           options: {
-            includePaths: path.join(__dirname, '../css/'),
-            javascriptEnabled: true,
+            includePaths: ['../css/'],
           },
         },
+        // {
+        //   loader: require.resolve('sass-loader'),
+        // },
       ],
-      // use: ['style-loader', 'css-loader', 'sass-loader'],
-      include: path.resolve(__dirname, '../css/'),
+      include: path.resolve(__dirname, '../'),
+      // include: path.resolve(__dirname, '../'),
     });
     config.resolve.extensions.push('.css', '.scss');
 
-    // return {
-    //   ...config,
-    //   module: {
-    //     ...config.module,
-    //     rules: customWebpackConfig.module.rules
-    //   }
-    // };
+    // necessary to support dynamic ~ imports (e.g. @import '~shared/variables')
+    // otherwise sass-loader cannot find the module to import
+    config.resolve.modules.push('../css');
 
     return config;
   },
